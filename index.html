@@ -13,15 +13,6 @@
             color: #fff;
             overflow: hidden;
         }
-        #background-video {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-        }
         .container {
             background: rgba(0, 0, 0, 0.6);
             padding: 20px;
@@ -70,47 +61,10 @@
         .matchingWords {
             margin-top: 10px;
         }
-        #video-buttons {
-            margin-bottom: 20px;
-        }
-        #video-buttons button {
-            padding: 10px;
-            font-size: 1em;
-            border: none;
-            border-radius: 5px;
-            margin: 5px;
-            cursor: pointer;
-        }
-        #video-controls {
-            margin-top: 20px;
-        }
-        #video-controls button,
-        #video-controls input[type="range"] {
-            padding: 10px;
-            font-size: 1em;
-            border: none;
-            border-radius: 5px;
-            margin: 5px;
-            cursor: pointer;
-        }
-        #video-controls input[type="range"] {
-            width: 200px;
-        }
     </style>
 </head>
 <body>
-    <div id="background-video"></div>
     <div class="container">
-        <div id="video-buttons">
-            <button onclick="changeVideo('CrgYEbIQkac', 939)">Starscapes</button>
-            <button onclick="changeVideo('qy0vb4V3B-4', 0)">Cities from Around the World</button>
-            <button onclick="changeVideo('n9LgeoJE4EI', 0)">Wonders of the World</button>
-        </div>
-        <div id="video-controls">
-            <button onclick="togglePlayPause()">Play/Pause</button>
-            <button onclick="toggleMute()">Toggle Music</button>
-            <input type="range" id="time-slider" min="0" max="100" step="1" value="0" oninput="seekVideo()">
-        </div>
         <h2>Inspiration Generator</h2>
 
         <!-- Phrase Entry Section -->
@@ -136,90 +90,6 @@
     </div>
 
     <script>
-        const tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        const firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-        let player;
-        let isPlaying = true;
-
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('background-video', {
-                videoId: 'CrgYEbIQkac',
-                playerVars: {
-                    autoplay: 1,
-                    controls: 0,
-                    showinfo: 0,
-                    modestbranding: 1,
-                    loop: 1,
-                    fs: 0,
-                    cc_load_policy: 0,
-                    iv_load_policy: 3,
-                    autohide: 0,
-                    mute: 1,
-                    start: 939
-                },
-                events: {
-                    'onReady': onPlayerReady,
-                    'onStateChange': onPlayerStateChange
-                }
-            });
-        }
-
-        function onPlayerReady(event) {
-            event.target.mute();
-            event.target.setLoop(true);
-            updateSlider();
-        }
-
-        function onPlayerStateChange(event) {
-            if (event.data == YT.PlayerState.PLAYING) {
-                isPlaying = true;
-                updateSlider();
-            } else {
-                isPlaying = false;
-            }
-        }
-
-        function changeVideo(videoId, start) {
-            player.loadVideoById({videoId: videoId, startSeconds: start});
-            player.mute();
-        }
-
-        function togglePlayPause() {
-            if (isPlaying) {
-                player.pauseVideo();
-            } else {
-                player.playVideo();
-            }
-        }
-
-        function toggleMute() {
-            if (player.isMuted()) {
-                player.unMute();
-            } else {
-                player.mute();
-            }
-        }
-
-        function seekVideo() {
-            const slider = document.getElementById('time-slider');
-            const newTime = player.getDuration() * (slider.value / 100);
-            player.seekTo(newTime, true);
-        }
-
-        function updateSlider() {
-            const slider = document.getElementById('time-slider');
-            const duration = player.getDuration();
-            setInterval(() => {
-                if (isPlaying && duration) {
-                    const currentTime = player.getCurrentTime();
-                    slider.value = (currentTime / duration) * 100;
-                }
-            }, 1000);
-        }
-
         const letterValues = {
             'a': 1, 'b': 2, 'c': 20, 'ch': 8, 'd': 4, 'e': 70, 'f': 80, 'g': 3, 'h': 5, 'i': 9,
             'j': 10, 'k': 0, 'l': 30, 'm': 40, 'n': 50, 'o': 6, 'p': 80, 'ph': 80, 'q': 100, 'r': 200,
@@ -232,7 +102,7 @@
 
         document.addEventListener('DOMContentLoaded', (event) => {
             const pastedWords = `
-            a: 1
+           a: 1
 a-horizon: 284
 a-ok: 7
 aardvark: 413
